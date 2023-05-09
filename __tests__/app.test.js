@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 
-describe.only('/api/categories', () => {
+describe('/api/categories', () => {
     test('GET - status 200', () => {
         return request(app)
             .get('/api/categories')
@@ -33,4 +33,44 @@ describe.only('/api/categories', () => {
             });
         });
     })
-})
+});
+
+describe('/api', () => {
+    test('GET - status 200 - responds with a JSON object', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((response) => {                
+            expect(response.headers['content-type']).toMatch('application/json');
+            })
+        });
+    test('Responds with a JSON object containing properties of all available endpoints', () => {
+        return request(app)             
+        .get('/api')
+        .expect(200)
+        .then((response) => {
+            expect(response.body).toHaveProperty("GET /api");
+            expect(response.body).toHaveProperty("GET /api/categories");
+            })            
+        });
+    test('Contains the correct properties for GET /api ', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((response) => {
+            expect(response.body['GET /api']).toHaveProperty("description");
+        });
+    });
+    test('Contains the correct properties for GET /api/categories', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((response) => {
+            expect(response.body['GET /api/categories']).toHaveProperty("description");
+            expect(response.body['GET /api/categories']).toHaveProperty("queries");
+            expect(response.body['GET /api/categories']).toHaveProperty("exampleResponse");
+        });
+    });
+    
+});
+// should test the properties on the json
