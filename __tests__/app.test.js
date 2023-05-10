@@ -28,6 +28,7 @@ describe.only('/api/categories', () => {
         .get('/api/categories')
         .expect(200)
         .then((response) => {
+            expect(response.body).toHaveLength(4);
             response.body.forEach((category) => {
                 expect(category).toHaveProperty('slug');
                 expect(category).toHaveProperty('description');
@@ -39,6 +40,7 @@ describe.only('/api/categories', () => {
         .get('/api/categories')
         .expect(200)
         .then((response) => {
+            expect(response.body).toHaveLength(4);
             response.body.forEach((category) => {
                 expect(typeof category.slug).toBe('string');
                 expect(typeof category.description).toBe('string');
