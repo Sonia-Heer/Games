@@ -4,6 +4,7 @@ const data = require('../db/data/test-data/index');
 const seed = require('../db/seeds/seed');
 const connection = require('../db/connection');
 const endpoints = require('../endpoints.json');
+
 beforeEach(() => {
     return seed(data);
 });
@@ -11,7 +12,6 @@ beforeEach(() => {
 afterAll(() => {
     return connection.end();
 });
-
 
 describe('/api/categories', () => {
     test('GET - status 200 and responds with an array of objects', () => {
@@ -58,7 +58,7 @@ describe('/api', () => {
             expect(response.headers['content-type']).toMatch('application/json');
             expect(response.body.endpoints).toEqual(endpoints);
             })
-        });
+    });
     test('Responds with a JSON object containing properties of all available endpoints', () => {
         return request(app)             
         .get('/api')
@@ -66,8 +66,9 @@ describe('/api', () => {
         .then((response) => {
             expect(response.body.endpoints).toHaveProperty("GET /api");
             expect(response.body.endpoints).toHaveProperty("GET /api/categories");
+            expect(response.body.endpoints).toHaveProperty("GET /api/reviews");
             })            
-        });
+    });
     test('Contains the correct properties for GET /api ', () => {
         return request(app)
         .get('/api')
@@ -86,5 +87,87 @@ describe('/api', () => {
             expect(response.body.endpoints['GET /api/categories']).toHaveProperty("exampleResponse");
         });
     });
+    test('Contains the correct properties for GET /api/reviews', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((response) => {
+            console.log(response.body.endpoints)
+            expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("description");
+            expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("queries");
+            expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("exampleResponse");
+        });
+    });
 });
+
+describe('/api/reviews/:reviews_id', () => {
+    test('GET - status: 200 - responds with the correct review object', () => {
+        return request(app)
+        .get('/api/reviews/1')
+        .expect(200)
+        .then((response) => {
+            const review = response.body.review;             
+            expect(review.review_id).toBe(1);
+            expect(review.title).toBe('Agricola');
+            expect(review.category).toBe('euro game');
+            expect(review.designer).toBe('Uwe Rosenberg');                
+            expect(review.owner).toBe('mallionaire');
+            expect(review.review_body).toBe('Farmyard fun!');
+            expect(review.review_img_url).toBe('https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700');
+            expect(review.created_at).toBe('2021-01-18T10:00:20.514Z');
+            expect(review.votes).toBe(1);
+            });
+    });
+    test('GET - status: 200 - should respond with an object with the correct properties', () => {
+        return request(app)
+        .get('/api/reviews/2')
+        .expect(200)
+        .then((response) => {
+            const review = response.body.review;             
+            expect(review).toHaveProperty('review_id');
+            expect(review).toHaveProperty('title');
+            expect(review).toHaveProperty('category');
+            expect(review).toHaveProperty('designer');
+            expect(review).toHaveProperty('owner');
+            expect(review).toHaveProperty('review_body');
+            expect(review).toHaveProperty('review_img_url');
+            expect(review).toHaveProperty('created_at');
+            expect(review).toHaveProperty('votes');
+            });
+    });
+    test('GET - status: 200 - should respond with an object with the correct data type for each property property', () => {
+        return request(app)
+        .get('/api/reviews/2')
+        .expect(200)
+        .then((response) => {
+            const review = response.body.review;             
+            expect(typeof review.review_id).toBe('number');
+            expect(typeof review.title).toBe('string');
+            expect(typeof review.category).toBe('string');
+            expect(typeof review.designer).toBe('string');                
+            expect(typeof review.owner).toBe('string');
+            expect(typeof review.review_body).toBe('string');
+            expect(typeof review.review_img_url).toBe('string');
+            expect(typeof review.created_at).toBe('string');
+            expect(typeof review.votes).toBe('number');
+            });
+    });
+    test('GET - status: 404 - review_id not found', () => {
+        return request(app)
+            .get('/api/reviews/1000')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toBe("Not found")
+            });
+    });
+    test('GET - status: 400 - invalid review_id', () => {
+        return request(app)
+            .get('/api/reviews/nonsense')
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toBe("bad request")
+            });
+    });
+});
+
 
