@@ -14,13 +14,25 @@ afterAll(() => {
 
 
 describe.only('/api/categories', () => {
-    test('GET - status 200', () => {
+    test('GET - status 200 and responds with an array of objects', () => {
         return request(app)
             .get('/api/categories')
             .expect(200)
             .then((response) => {
+                expect(Array.isArray(response.body)).toBe(true);
                 expect(response.body.length).toBe(4);
             });
+    });
+    test('Should contain the correct properties', () => {
+        return request(app)
+        .get('/api/categories')
+        .expect(200)
+        .then((response) => {
+            response.body.forEach((category) => {
+                expect(category).toHaveProperty('slug');
+                expect(category).toHaveProperty('description');
+            });
+        });
     });
     test('Check that all required columns are returned', () => {
         return request(app)
@@ -32,5 +44,6 @@ describe.only('/api/categories', () => {
                 expect(typeof category.description).toBe('string');
             });
         });
-    })
-})
+    });
+});
+
