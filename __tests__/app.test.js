@@ -3,7 +3,7 @@ const request = require('supertest');
 const data = require('../db/data/test-data/index');
 const seed = require('../db/seeds/seed');
 const connection = require('../db/connection');
-
+const endpoints = require('../endpoints.json');
 beforeEach(() => {
     return seed(data);
 });
@@ -36,12 +36,13 @@ describe('/api/categories', () => {
 });
 
 describe('/api', () => {
-    test('GET - status 200 - responds with a JSON object', () => {
+    test('GET - status: 200 - responds with a JSON object of the correct structure', () => {
         return request(app)
         .get('/api')
         .expect(200)
         .then((response) => {                
             expect(response.headers['content-type']).toMatch('application/json');
+            expect(response.body).toEqual(endpoints);
             })
         });
     test('Responds with a JSON object containing properties of all available endpoints', () => {
@@ -71,8 +72,4 @@ describe('/api', () => {
             expect(response.body['GET /api/categories']).toHaveProperty("exampleResponse");
         });
     });
-    
 });
-
-// import json file
-// type of 
