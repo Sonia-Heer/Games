@@ -73,4 +73,6 @@ describe('/api', () => {
     });
     
 });
-// should test the properties on the json
+
+// import json file
+// type of 
