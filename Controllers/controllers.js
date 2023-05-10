@@ -9,5 +9,5 @@ exports.getCategories = (req, res) => {
 };
 
 exports.getAllEndpoints = (req, res) => {
-    res.status(200).send(endpoints);
+    res.status(200).send({ endpoints: endpoints });
 };

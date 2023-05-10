@@ -42,7 +42,7 @@ describe('/api', () => {
         .expect(200)
         .then((response) => {                
             expect(response.headers['content-type']).toMatch('application/json');
-            expect(response.body).toEqual(endpoints);
+            expect(response.body.endpoints).toEqual(endpoints);
             })
         });
     test('Responds with a JSON object containing properties of all available endpoints', () => {
@@ -50,8 +50,8 @@ describe('/api', () => {
         .get('/api')
         .expect(200)
         .then((response) => {
-            expect(response.body).toHaveProperty("GET /api");
-            expect(response.body).toHaveProperty("GET /api/categories");
+            expect(response.body.endpoints).toHaveProperty("GET /api");
+            expect(response.body.endpoints).toHaveProperty("GET /api/categories");
             })            
         });
     test('Contains the correct properties for GET /api ', () => {
@@ -59,7 +59,7 @@ describe('/api', () => {
         .get('/api')
         .expect(200)
         .then((response) => {
-            expect(response.body['GET /api']).toHaveProperty("description");
+            expect(response.body.endpoints['GET /api']).toHaveProperty("description");
         });
     });
     test('Contains the correct properties for GET /api/categories', () => {
@@ -67,9 +67,9 @@ describe('/api', () => {
         .get('/api')
         .expect(200)
         .then((response) => {
-            expect(response.body['GET /api/categories']).toHaveProperty("description");
-            expect(response.body['GET /api/categories']).toHaveProperty("queries");
-            expect(response.body['GET /api/categories']).toHaveProperty("exampleResponse");
+            expect(response.body.endpoints['GET /api/categories']).toHaveProperty("description");
+            expect(response.body.endpoints['GET /api/categories']).toHaveProperty("queries");
+            expect(response.body.endpoints['GET /api/categories']).toHaveProperty("exampleResponse");
         });
     });
 });
