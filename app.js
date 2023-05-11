@@ -10,7 +10,9 @@ app.get('/api', getAllEndpoints);
 
 app.get('/api/reviews', getReviews);
 
-app.get('/api/reviews/:review_id', getReviewsByID)
+app.get('/api/reviews/:review_id', getReviewsByID);
+
+app.post('/api/')
 
 app.use((err, req, res, next) => {
     if(err.code === "22P02"){
