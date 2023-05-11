@@ -92,7 +92,6 @@ describe('/api', () => {
         .get('/api')
         .expect(200)
         .then((response) => {
-            console.log(response.body.endpoints)
             expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("description");
             expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("queries");
             expect(response.body.endpoints['GET /api/reviews']).toHaveProperty("exampleResponse");
