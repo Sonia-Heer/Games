@@ -207,9 +207,12 @@ describe('/api/reviews', () => {
 });
 
 describe('/api/reviews/:review_id/comments', () => {
-
+    test('POST - status: 201 - responds with a newly created comment', () => {
+        
+    })
 });
 
 // repsonds with a newly created comment
 // has the properties username and body 
 // typeof properties for username and body to be string 
+// status code 201
