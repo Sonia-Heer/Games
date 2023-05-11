@@ -15,4 +15,3 @@ You are now connected to database "nc_games_test" as user "sonia".
         12 | mallionaire     | Scythe; you're gonna need a bigger table!            | social deduction | https://images.pexels.com/photos/4200740/pexels-photo-4200740.jpeg?w=700&h=700 | 2021-01-22 10:37:04.839 |   100 | Jamey Stegmaier        |             0
         13 | mallionaire     | Settlers of Catan: Don't Settle For Less             | social deduction | https://images.pexels.com/photos/1153929/pexels-photo-1153929.jpeg?w=700&h=700 | 1970-01-10 03:08:38.4   |    16 | Klaus Teuber           |             0
 (13 rows)
-
