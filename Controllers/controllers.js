@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews, selectReviewsById} = require("../Models/models");
+const { fetchCategories, fetchReviews, selectReviewsById, createComment} = require("../Models/models");
 
 const endpoints = require('../endpoints.json');
 
@@ -37,3 +37,8 @@ exports.getReviewsByID = (req, res, next) => {
             next(err)
         }); 
 };
+
+exports.postComment = (req, res, next) => {
+    createComment()
+    res.status(201).send({ comment: comment})
+}

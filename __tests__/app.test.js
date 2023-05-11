@@ -206,11 +206,29 @@ describe('/api/reviews', () => {
     });
 });
 
-describe('/api/reviews/:review_id/comments', () => {
-    test('POST - status: 201 - responds with a newly created comment', () => {
-        
-    })
-});
+// describe('/api/reviews/:review_id/comments', () => {
+//     test('POST - status: 201 - responds with a newly created comment', () => {
+//     const testNewComment = {
+//         username: 'testuser',
+//         body: 'This is a test'
+//     };
+//     return request(app)
+//     .post('/api/reviews/6/comments')
+//     .send(testNewComment)
+//     .expect(201)
+//     .then((response) => {
+//         const expectedPostedComment = {
+//             comment_id: expect.any(Number),
+//             created_at: expect.any(String),
+//             votes: expect.any(String),
+//             author: 'testuser',
+//             body: 'This is a test comment',
+//             review_id: 5
+//         };
+//         expect(response.body.comment).toEqual(expectedPostedComment)
+//         })
+//     })
+// });
 
 // repsonds with a newly created comment
 // has the properties username and body 

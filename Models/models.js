@@ -34,3 +34,7 @@ exports.selectReviewsById = (review_id) => {
         })
 };
 
+exports.createComment = (newComment) => {
+    const{ username, body } = newComment;
+    return connection.query(`INSERT INTO comments`)
+}
