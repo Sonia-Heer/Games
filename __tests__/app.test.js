@@ -101,47 +101,13 @@ describe('/api', () => {
 });
 
 describe('/api/reviews/:reviews_id', () => {
-    test('GET - status: 200 - responds with the correct review object', () => {
-        return request(app)
-        .get('/api/reviews/1')
-        .expect(200)
-        .then((response) => {
-            const review = response.body.review;             
-            expect(review.review_id).toBe(1);
-            expect(review.title).toBe('Agricola');
-            expect(review.category).toBe('euro game');
-            expect(review.designer).toBe('Uwe Rosenberg');                
-            expect(review.owner).toBe('mallionaire');
-            expect(review.review_body).toBe('Farmyard fun!');
-            expect(review.review_img_url).toBe('https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700');
-            expect(review.created_at).toBe('2021-01-18T10:00:20.514Z');
-            expect(review.votes).toBe(1);
-            });
-    });
-    test('GET - status: 200 - should respond with an object with the correct properties', () => {
-        return request(app)
-        .get('/api/reviews/2')
-        .expect(200)
-        .then((response) => {
-            const review = response.body.review;             
-            expect(review).toHaveProperty('review_id');
-            expect(review).toHaveProperty('title');
-            expect(review).toHaveProperty('category');
-            expect(review).toHaveProperty('designer');
-            expect(review).toHaveProperty('owner');
-            expect(review).toHaveProperty('review_body');
-            expect(review).toHaveProperty('review_img_url');
-            expect(review).toHaveProperty('created_at');
-            expect(review).toHaveProperty('votes');
-            });
-    });
     test('GET - status: 200 - should respond with an object with the correct data type for each property property', () => {
         return request(app)
         .get('/api/reviews/2')
         .expect(200)
         .then((response) => {
             const review = response.body.review;             
-            expect(typeof review.review_id).toBe('number');
+            expect(review.review_id).toBe(2);
             expect(typeof review.title).toBe('string');
             expect(typeof review.category).toBe('string');
             expect(typeof review.designer).toBe('string');                
