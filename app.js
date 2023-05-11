@@ -1,12 +1,14 @@
 const express = require('express');
 const app = express();
 const connection = require('./db/connection')
-const { getCategories, getAllEndpoints, getReviewsByID } = require('./Controllers/controllers');
+const { getCategories, getAllEndpoints, getReviews, getReviewsByID } = require('./Controllers/controllers');
 
 
 app.get('/api/categories', getCategories);
 
-app.get('/api', getAllEndpoints)
+app.get('/api', getAllEndpoints);
+
+app.get('/api/reviews', getReviews);
 
 app.get('/api/reviews/:review_id', getReviewsByID)
 
