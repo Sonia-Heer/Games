@@ -248,14 +248,14 @@ describe.only('/api/reviews/:review_id/comments', () => {
             expect(response.body.comments).toEqual([]);
         });
     })
-    // test('GET - status: 404 - review_id not found', () => {
-    //     return request(app)
-    //     .get('/api/reviews/1000/comments')
-    //     .expect(404)
-    //     .then((response) => {
-    //         expect(response.body.msg).toBe("Not found")
-    //     });
-    // });
+    test('GET - status: 404 - review_id not found', () => {
+        return request(app)
+        .get('/api/reviews/1000/comments')
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe("Not found")
+        });
+    });
     test('GET - status: 400 - invalid review_id', () => {
         return request(app)
         .get('/api/reviews/not_an_id/comments')
