@@ -8,7 +8,6 @@ exports.fetchCategories = () => {
             });
 };
 
-
 exports.fetchReviews = (sort_by = 'created_at', order = 'asc') => {
     const validSortQueries = ['created_at', 'owner', 'title', 'category', 'votes', 'comment_count'];
     const validOrderQueries = ['asc', 'desc'];
@@ -23,6 +22,7 @@ exports.fetchReviews = (sort_by = 'created_at', order = 'asc') => {
         .then((results) => {
             return results.rows;
         });
+};
 
 exports.selectReviewsById = (review_id) => {
     return connection.query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])

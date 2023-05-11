@@ -25,6 +25,7 @@ exports.getReviews = (req, res, next) => {
     .catch((err) => {
         next(err)
     });
+};
 
 exports.getReviewsByID = (req, res, next) => {
     const review_id = req.params.review_id;
