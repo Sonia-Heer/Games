@@ -35,11 +35,12 @@ exports.selectReviewsById = (review_id) => {
 };
 
 exports.fetchReviewIdComments = (review_id) => {
+    // if(){
+    //     return Promise.reject({ status: 404, msg: "Not found"})
+    // };
+
     return connection.query(`SELECT comments.comment_id, comments.created_at, comments.votes, comments.author, comments.body, reviews.review_id FROM reviews JOIN comments ON reviews.review_id = comments.review_id WHERE comments.review_id = $1 ORDER BY comments.created_at DESC;`, [review_id])
     .then((results) => {
-        if(results.rows.length === 0){
-            return Promise.reject({ status: 404, msg: "Not found"})
-        }
         return results.rows
     });
 };

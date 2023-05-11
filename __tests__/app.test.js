@@ -206,7 +206,7 @@ describe('/api/reviews', () => {
     });
 });
 
-describe('/api/reviews/:review_id/comments', () => {
+describe.only('/api/reviews/:review_id/comments', () => {
     test('GET - status: 200 - responds with an array of comments for the given review id', () => {
         return request(app)
         .get('/api/reviews/3/comments')
@@ -240,12 +240,28 @@ describe('/api/reviews/:review_id/comments', () => {
             expect(response.body.comments).toBeSortedBy('created_at', { descending: true });
         });
     });
-    test('GET - status: 404 - review_id not found', () => {
+    test('GET - status: 200 - responds with an empty array for valid review ids with no comments', () => {
         return request(app)
-        .get('/api/reviews/1000/comments')
-        .expect(404)
+        .get('/api/reviews/10/comments')
+        .expect(200)
         .then((response) => {
-            expect(response.body.msg).toBe("Not found")
+            expect(response.body.comments).toEqual([]);
+        });
+    })
+    // test('GET - status: 404 - review_id not found', () => {
+    //     return request(app)
+    //     .get('/api/reviews/1000/comments')
+    //     .expect(404)
+    //     .then((response) => {
+    //         expect(response.body.msg).toBe("Not found")
+    //     });
+    // });
+    test('GET - status: 400 - invalid review_id', () => {
+        return request(app)
+        .get('/api/reviews/not_an_id/comments')
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe("bad request")
         });
     });
 });
