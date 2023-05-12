@@ -34,3 +34,29 @@ exports.selectReviewsById = (review_id) => {
         })
 };
 
+const checkReviewExist = (review_id) => {
+    return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+    .then((results) => {
+        if(results.rows.length === 0){
+            return false;
+        } else {
+            return true;
+        }
+    })
+};
+
+exports.fetchReviewIdComments = (review_id) => {
+   
+ return checkReviewExist(review_id)
+    .then((exists) => {
+        if(exists){
+            return connection.query(`SELECT comments.comment_id, comments.created_at, comments.votes, comments.author, comments.body, reviews.review_id FROM reviews JOIN comments ON reviews.review_id = comments.review_id WHERE comments.review_id = $1 ORDER BY comments.created_at DESC;`, [review_id])
+            .then((results) => {
+                return results.rows
+            });
+        }else{
+            return Promise.reject({ status: 404, msg: "Not found"})
+        };
+    });
+};
+
