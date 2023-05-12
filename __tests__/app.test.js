@@ -206,7 +206,7 @@ describe('/api/reviews', () => {
     });
 });
 
-describe.only('/api/reviews/:review_id/comments', () => {
+describe('/api/reviews/:review_id/comments', () => {
     test('GET - status: 200 - responds with an array of comments for the given review id', () => {
         return request(app)
         .get('/api/reviews/3/comments')
@@ -266,3 +266,77 @@ describe.only('/api/reviews/:review_id/comments', () => {
     });
 });
 
+describe.only('/api/reviews/:review_id', () => {
+    test('PATCH - status: 200 - responds with an updated review with increased votes', () => {
+        const newVotes = { inc_votes: 2 };
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(200)
+        .then((response) => {
+            const expectedReview = {
+                title: 'Agricola',
+                designer: 'Uwe Rosenberg',
+                owner: 'mallionaire',
+                review_img_url:
+                  'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700',                   
+                review_body: 'Farmyard fun!',
+                review_id: 1,
+                category: 'euro game',
+                created_at: expect.any(String),
+                votes: 3
+            }
+            expect(response.body.review).toEqual(expectedReview);
+        });
+    });
+    test('PATCH - status: 200 - responds with an updated review with decreased votes', () => {
+        const newVotes = { inc_votes: -2 };
+        return request(app)
+        .patch('/api/reviews/2')
+        .send(newVotes)
+        .expect(200)
+        .then((response) => {
+            const expectedReview = {
+                title: 'Jenga',
+                designer: 'Leslie Scott',
+                owner: 'philippaclaire9',
+                review_img_url:
+                  'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+                review_body: 'Fiddly fun for all the family',
+                review_id: 2,
+                category: 'dexterity',
+                created_at: expect.any(String),
+                votes: 3
+              }
+            expect(response.body.review).toEqual(expectedReview);
+        });
+    });
+    test('PATCH - status: 404 - review_id not found', () => {
+        const newVotes = { inc_votes: -2 };
+        return request(app)
+        .patch('/api/reviews/1000')
+        .send(newVotes)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe("Not found")
+        });
+    });
+    test('PATCH - status: 400 - invalid review_id', () => {
+        const newVotes = { inc_votes: -2 };
+        return request(app)
+        .patch('/api/reviews/not_an_id')
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe("bad request")
+        });
+    });
+
+})
+
+
+
+
+
+//responds with status 400 and an error message when inc_votes is missing'
+//responds with status 400 and an error message when inc_votes is not a number
