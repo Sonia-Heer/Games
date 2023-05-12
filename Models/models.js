@@ -62,17 +62,14 @@ exports.updatedReview = (review_id, inc_votes) => {
     if(inc_votes === undefined){
         return Promise.reject({ status: 400, msg: "bad request" })
     }else{
-        return checkReviewExists(review_id)
-        .then((exists) => {
-            if(exists){
-                return connection.query(`UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`, [inc_votes, review_id])
-                .then((results) => {
-                    return results.rows[0];
-                })
+        return connection.query(`UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`, [inc_votes, review_id])
+        .then((results) => {
+            if(results.rows.length === 0){
+               return Promise.reject({ status: 404, msg: "Not found"})
             }else{
-            return Promise.reject({ status: 404, msg: "Not found"})
-        };
-    });
+                return results.rows[0];
+            };
+        });
     };
 };
 
