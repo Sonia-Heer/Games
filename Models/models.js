@@ -46,7 +46,6 @@ const checkReviewExist = (review_id) => {
 };
 
 exports.fetchReviewIdComments = (review_id) => {
-   
  return checkReviewExist(review_id)
     .then((exists) => {
         if(exists){
