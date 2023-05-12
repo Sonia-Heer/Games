@@ -38,7 +38,7 @@ const checkReviewExists = (review_id) => {
     return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
     .then((results) => {
         if(results.rows.length === 0){
-            return false;
+            return Promise.reject({ status: 404, msg: 'Review not found' })
         }else{
             return true;
         };
@@ -49,7 +49,7 @@ const checkUsernameExists = (username) => {
     return connection.query(`SELECT * FROM users WHERE username = $1;`, [username])
     .then((results) => {
         if(results.rows.length === 0){
-            return false;
+            return Promise.reject({ status: 404, msg: 'Username not found' });
         }else{
             return true;
         };
@@ -57,15 +57,17 @@ const checkUsernameExists = (username) => {
 }
     
 exports.createComment = (review_id, username, body) => {
+    if(username === undefined || body === undefined){
+        return Promise.reject({ status: 400, msg: 'bad request' })
+    }else{
     return Promise.all([checkReviewExists(review_id), checkUsernameExists(username)])
-        .then((reviewExists, usernameExists) => {
+        .then(([reviewExists, usernameExists]) => {
             if(reviewExists && usernameExists){
                 return connection.query(`INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;`, [username, body, review_id])
                 .then((results) => {
-                    return results.rows
-                })
-            }else{
-                return Promise.reject({ status: 404, msg: 'Review or username not found' })
-            }
+                    return results.rows[0]
+                });
+            };
         });
+    };
 };
