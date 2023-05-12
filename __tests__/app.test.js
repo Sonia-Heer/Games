@@ -230,7 +230,7 @@ describe('/api/reviews/:review_id/comments', () => {
         .send(testNewComment)
         .expect(404)
         .then((response) => {
-            expect(response.body.msg).toBe('Username not found');
+            expect(response.body.msg).toBe('Not found');
         });
     });
     test('Status: 400 - invalid review_id', () => {
