@@ -206,31 +206,59 @@ describe('/api/reviews', () => {
     });
 });
 
-// describe.only('/api/reviews/:review_id/comments', () => {
-//     test('POST - status: 201 - responds with a newly created comment', () => {
-//     const testNewComment = {
-//         username: 'testusername',
-//         body: 'test comment'
-//     };
-//     return request(app)
-//     .post('/api/reviews/6/comments')
-//     .send(testNewComment)
-//     .expect(201)
-//     .then((response) => {
-//         const expectedPostedComment = {
-//             comment_id: expect.any(Number),
-//             created_at: expect.any(String),
-//             votes: expect.any(String),
-//             author: 'testuser',
-//             body: 'test comment',
-//             review_id: 5
-//         };
-//         expect(response.body.comment).toEqual(expectedPostedComment)
-//         })
-//     })
-// });
+describe.only('/api/reviews/:review_id/comments', () => {
+    test('Status: 404 - review_id not found', () => {
+        const testNewComment = {
+            username: 'testusername',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/1000/comments')
+        .send(testNewComment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe('Review or username not found');
+        });
+    });
+    test('Status: 404 - username not found', () => {
+        const testNewComment = {
+            username: 'testusername',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/10/comments')
+        .send(testNewComment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe('Review or username not found');
+        });
+    });
+    test('Status: 400 - invalid review_id', () => {
+        const testNewComment = {
+            username: 'bainesface',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/not_an_id/comments')
+        .send(testNewComment)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe('bad request');
+        });
+    })
+    // test('POST - status: 201 - responds with a newly created comment', () => {
+    // const testNewComment = {
+    //     username: 'bainesface',
+    //     body: 'test comment'
+    // };
+    // return request(app)
+    // .post('/api/reviews/6/comments')
+    // .send(testNewComment)
+    // .expect(201)
+    // .then((response) => {
+    //     expect(response.body.newComment).toEqual()
+    //     });
+    // });
+});
 
-// repsonds with a newly created comment
-// has the properties username and body 
-// typeof properties for username and body to be string 
-// status code 201
+

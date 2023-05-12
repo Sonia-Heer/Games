@@ -35,7 +35,6 @@ exports.selectReviewsById = (review_id) => {
 };
 
 const checkReviewExists = (review_id) => {
-    console.log(review_id)
     return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
     .then((results) => {
         if(results.rows.length === 0){
@@ -45,20 +44,28 @@ const checkReviewExists = (review_id) => {
         };
     });
 };
+
+const checkUsernameExists = (username) => {
+    return connection.query(`SELECT * FROM users WHERE username = $1;`, [username])
+    .then((results) => {
+        if(results.rows.length === 0){
+            return false;
+        }else{
+            return true;
+        };
+    });
+}
     
 exports.createComment = (review_id, username, body) => {
-    console.log(review_id, username, body, "here")
-    return checkReviewExists(review_id)
-        .then((exists) => {
-            if(exists){
+    return Promise.all([checkReviewExists(review_id), checkUsernameExists(username)])
+        .then((reviewExists, usernameExists) => {
+            if(reviewExists && usernameExists){
                 return connection.query(`INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;`, [username, body, review_id])
                 .then((results) => {
                     return results.rows
                 })
             }else{
-                return Promise.reject({ status: 400, msg: 'bad request' })
+                return Promise.reject({ status: 404, msg: 'Review or username not found' })
             }
         });
-    
-    
-}
+};
