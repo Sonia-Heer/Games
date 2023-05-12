@@ -59,7 +59,9 @@ exports.fetchReviewIdComments = (review_id) => {
 };
 
 exports.updatedReview = (review_id, inc_votes) => {
-    if(inc_votes !== undefined){
+    if(inc_votes === undefined){
+        return Promise.reject({ status: 400, msg: "bad request" })
+    }else{
         return checkReviewExists(review_id)
         .then((exists) => {
             if(exists){
@@ -71,8 +73,6 @@ exports.updatedReview = (review_id, inc_votes) => {
             return Promise.reject({ status: 404, msg: "Not found"})
         };
     });
-    }else{
-        return Promise.reject({ status: 400, msg: "bad request" })
     };
 };
 
