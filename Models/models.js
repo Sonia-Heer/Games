@@ -34,7 +34,31 @@ exports.selectReviewsById = (review_id) => {
         })
 };
 
-exports.createComment = (newComment) => {
-    const{ username, body } = newComment;
-    return connection.query(`INSERT INTO comments`)
+const checkReviewExists = (review_id) => {
+    console.log(review_id)
+    return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+    .then((results) => {
+        if(results.rows.length === 0){
+            return false;
+        }else{
+            return true;
+        };
+    });
+};
+    
+exports.createComment = (review_id, username, body) => {
+    console.log(review_id, username, body, "here")
+    return checkReviewExists(review_id)
+        .then((exists) => {
+            if(exists){
+                return connection.query(`INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;`, [username, body, review_id])
+                .then((results) => {
+                    return results.rows
+                })
+            }else{
+                return Promise.reject({ status: 400, msg: 'bad request' })
+            }
+        });
+    
+    
 }

@@ -1,8 +1,1 @@
 You are now connected to database "nc_games_test" as user "sonia".
- comment_id |       created_at        | votes |   author    |                                   body                                    | review_id 
-------------+-------------------------+-------+-------------+---------------------------------------------------------------------------+-----------
-          5 | 2021-01-18 10:24:05.41  |    13 | mallionaire | Now this is a story all about how, board games turned my life upside down |         2
-          1 | 2017-11-22 12:43:33.389 |    16 | bainesface  | I loved this game too!                                                    |         2
-          4 | 2017-11-22 12:36:03.389 |    16 | bainesface  | EPIC board game!                                                          |         2
-(3 rows)
-
