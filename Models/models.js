@@ -59,7 +59,8 @@ exports.fetchReviewIdComments = (review_id) => {
 };
 
 exports.updatedReview = (review_id, inc_votes) => {
-    return checkReviewExists(review_id)
+    if(inc_votes !== undefined){
+        return checkReviewExists(review_id)
         .then((exists) => {
             if(exists){
                 return connection.query(`UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`, [inc_votes, review_id])
@@ -70,5 +71,8 @@ exports.updatedReview = (review_id, inc_votes) => {
             return Promise.reject({ status: 404, msg: "Not found"})
         };
     });
+    }else{
+        return Promise.reject({ status: 400, msg: "bad request" })
+    };
 };
 

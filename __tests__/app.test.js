@@ -266,7 +266,7 @@ describe('/api/reviews/:review_id/comments', () => {
     });
 });
 
-describe.only('/api/reviews/:review_id', () => {
+describe('/api/reviews/:review_id', () => {
     test('PATCH - status: 200 - responds with an updated review with increased votes', () => {
         const newVotes = { inc_votes: 2 };
         return request(app)
@@ -331,7 +331,26 @@ describe.only('/api/reviews/:review_id', () => {
             expect(response.body.msg).toBe("bad request")
         });
     });
-
+    test('Status: 400 - required key is not present', () => {
+        const newVotes = { hello: -2 };
+        return request(app)
+        .patch('/api/reviews/5')
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe("bad request")
+        });
+    });
+    test('Status: 400 - votes is not a number', () => {
+        const newVotes = { inc_votes: 'hello' };
+        return request(app)
+        .patch('/api/reviews/5')
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe("bad request")
+        });
+    });
 })
 
 
