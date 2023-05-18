@@ -207,6 +207,106 @@ describe('/api/reviews', () => {
 });
 
 describe('/api/reviews/:review_id/comments', () => {
+    test('Status: 404 - review_id not found', () => {
+        const testNewComment = {
+            username: 'testusername',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/1000/comments')
+        .send(testNewComment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe('Review not found');
+        });
+    });
+    test('Status: 404 - username not found', () => {
+        const testNewComment = {
+            username: 'testusername',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/10/comments')
+        .send(testNewComment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.msg).toBe('Not found');
+        });
+    });
+    test('Status: 400 - invalid review_id', () => {
+        const testNewComment = {
+            username: 'bainesface',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/not_an_id/comments')
+        .send(testNewComment)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe('bad request');
+        });
+    });
+    test('Status: 400 - required keys are not present', () => {
+        const testNewComment = {
+            hello: 'bainesface',
+            body: 'test comment'
+        };
+        return request(app)
+        .post('/api/reviews/5/comments')
+        .send(testNewComment)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe('bad request');
+        });
+    });
+    test('POST - status: 201 - responds with a newly created comment', () => {
+    const testNewComment = {
+        username: 'bainesface',
+        body: 'test comment'
+    };
+    return request(app)
+    .post('/api/reviews/6/comments')
+    .send(testNewComment)
+    .expect(201)
+    .then((response) => {
+        const postedComment = {
+            comment_id: 7,
+            body: 'test comment',
+            review_id: 6,
+            author: 'bainesface',
+            votes: 0,
+            created_at: expect.any(String)
+        };
+        expect(response.body.newComment).toEqual(postedComment)
+        });
+    });
+    test('POST - status: 201 - ignores extra keys on the post body', () => {
+        const testNewComment = {
+            username: 'bainesface',
+            body: 'test comment',
+            comment_id: 10
+        };
+        return request(app)
+        .post('/api/reviews/6/comments')
+        .send(testNewComment)
+        .expect(201)
+        .then((response) => {
+            const postedComment = {
+                comment_id: 7,
+                body: 'test comment',
+                review_id: 6,
+                author: 'bainesface',
+                votes: 0,
+                created_at: expect.any(String)
+            };
+            expect(response.body.newComment).toEqual(postedComment)
+            });
+    });
+});
+
+
+
+describe('/api/reviews/:review_id/comments', () => {
     test('GET - status: 200 - responds with an array of comments for the given review id', () => {
         return request(app)
         .get('/api/reviews/3/comments')
@@ -253,7 +353,7 @@ describe('/api/reviews/:review_id/comments', () => {
         .get('/api/reviews/1000/comments')
         .expect(404)
         .then((response) => {
-            expect(response.body.msg).toBe("Not found")
+            expect(response.body.msg).toBe("Review not found")
         });
     });
     test('GET - status: 400 - invalid review_id', () => {
@@ -355,7 +455,3 @@ describe('/api/reviews/:review_id', () => {
 
 
 
-
-
-//responds with status 400 and an error message when inc_votes is missing'
-//responds with status 400 and an error message when inc_votes is not a number
