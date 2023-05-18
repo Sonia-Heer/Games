@@ -1,4 +1,5 @@
-const { fetchCategories, fetchReviews, selectReviewsById, createComment} = require("../Models/models");
+
+const { fetchCategories, fetchReviews, selectReviewsById, fetchReviewIdComments, createComment} = require("../Models/models")
 
 const endpoints = require('../endpoints.json');
 
@@ -38,6 +39,7 @@ exports.getReviewsByID = (req, res, next) => {
         }); 
 };
 
+
 exports.postComment = (req, res, next) => {
     const { review_id } = req.params;
     const { username, body } = req.body;
@@ -51,3 +53,16 @@ exports.postComment = (req, res, next) => {
         }); 
     
 }
+
+exports.getReviewIdComments = (req, res, next) => {
+    const { review_id } = req.params;
+    fetchReviewIdComments(review_id)
+        .then((comments) => {
+            res.status(200).send({ comments: comments })
+        })
+        .catch((err) => {
+            next(err)
+        });
+};
+
+
