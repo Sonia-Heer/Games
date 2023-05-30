@@ -90,3 +90,6 @@ exports.updatedReview = (review_id, inc_votes) => {
     };
 };
 
+exports.deleteCommentById = (comment_id) => {
+    return connection.query
+};

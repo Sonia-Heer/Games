@@ -453,5 +453,20 @@ describe('/api/reviews/:review_id', () => {
     });
 })
 
+// describe('/api/comments/:comment_id', () => {
+//     test('DELETE - status: 204 - responds with status code and no content', () => {
+//         return request(app)
+//         .delete('/api/comments/5')
+//         .send()
+//         .expect(204)
+//         .then((response) => {
+//             expect(response.body).toBe()
+//         })
+//     })
+// })
+
+// responds with a status 204 
+// responds with status 404 if comment id cannot be found 
+// responds with 400 if comment id is not valid (not a number)
 
 
