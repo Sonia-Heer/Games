@@ -1,5 +1,5 @@
 
-const { fetchCategories, fetchReviews, selectReviewsById, fetchReviewIdComments, updatedReview, createComment} = require("../Models/models");
+const { fetchCategories, fetchReviews, selectReviewsById, fetchReviewIdComments, updatedReview, createComment, deleteCommentById} = require("../Models/models");
 
 const endpoints = require('../endpoints.json');
 
@@ -77,4 +77,11 @@ exports.patchReviewVotes = (req, res, next) => {
         .catch((err) => {
             next(err);
         });
+};
+
+exports.deleteComments = (req, res, next) => {
+    const { comment_id } = req.params;
+
+    deleteCommentById(comment_id)
+    .then()
 };
