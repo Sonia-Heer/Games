@@ -44,14 +44,14 @@ const checkReviewExists = (review_id) => {
     });
 };
     
-exports.createComment = (review_id, username, body) => {
-    if(username === undefined || body === undefined){
+exports.createComment = (review_id, author, body) => {
+    if(author === undefined || body === undefined){
         return Promise.reject({ status: 400, msg: 'bad request' })
     }else{
     return Promise.all([checkReviewExists(review_id)])
         .then((reviewExists) => {
             if(reviewExists){
-                return connection.query(`INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;`, [username, body, review_id])
+                return connection.query(`INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;`, [author, body, review_id])
                 .then((results) => {
                     return results.rows[0]
                 });

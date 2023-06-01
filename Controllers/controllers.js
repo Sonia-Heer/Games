@@ -42,9 +42,9 @@ exports.getReviewsByID = (req, res, next) => {
 
 exports.postComment = (req, res, next) => {
     const { review_id } = req.params;
-    const { username, body } = req.body;
+    const { author, body } = req.body;
    
-    createComment(review_id, username, body)
+    createComment(review_id, author, body)
         .then((comment) => {
             res.status(201).send({ newComment: comment})
         })

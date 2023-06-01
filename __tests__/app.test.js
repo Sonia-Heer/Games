@@ -209,7 +209,7 @@ describe('/api/reviews', () => {
 describe('/api/reviews/:review_id/comments', () => {
     test('Status: 404 - review_id not found', () => {
         const testNewComment = {
-            username: 'testusername',
+            author: 'testusername',
             body: 'test comment'
         };
         return request(app)
@@ -220,9 +220,9 @@ describe('/api/reviews/:review_id/comments', () => {
             expect(response.body.msg).toBe('Review not found');
         });
     });
-    test('Status: 404 - username not found', () => {
+    test('Status: 404 - author not found', () => {
         const testNewComment = {
-            username: 'testusername',
+            author: 'testusername',
             body: 'test comment'
         };
         return request(app)
@@ -235,7 +235,7 @@ describe('/api/reviews/:review_id/comments', () => {
     });
     test('Status: 400 - invalid review_id', () => {
         const testNewComment = {
-            username: 'bainesface',
+            author: 'bainesface',
             body: 'test comment'
         };
         return request(app)
@@ -261,7 +261,7 @@ describe('/api/reviews/:review_id/comments', () => {
     });
     test('POST - status: 201 - responds with a newly created comment', () => {
     const testNewComment = {
-        username: 'bainesface',
+        author: 'bainesface',
         body: 'test comment'
     };
     return request(app)
@@ -282,7 +282,7 @@ describe('/api/reviews/:review_id/comments', () => {
     });
     test('POST - status: 201 - ignores extra keys on the post body', () => {
         const testNewComment = {
-            username: 'bainesface',
+            author: 'bainesface',
             body: 'test comment',
             comment_id: 10
         };
