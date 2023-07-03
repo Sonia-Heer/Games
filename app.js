@@ -8,7 +8,7 @@ const { getCategories, getAllEndpoints, getReviews, getReviewsByID, getReviewIdC
 app.use(cors())
 app.use(express.json());
 
-app.get('/categories', getCategories);
+app.get('/api/categories', getCategories);
 
 app.get('/api', getAllEndpoints);
 

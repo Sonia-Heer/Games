@@ -16,7 +16,7 @@ afterAll(() => {
 describe('/api/categories', () => {
     test('GET - status 200 and responds with an array of categories', () => {
         return request(app)
-            .get('/categories')
+            .get('/api/categories')
             .expect(200)
             .then((response) => {
                 expect(Array.isArray(response.body)).toBe(true);
@@ -25,7 +25,7 @@ describe('/api/categories', () => {
     });
     test('Should contain the correct properties', () => {
         return request(app)
-        .get('/categories')
+        .get('/api/categories')
         .expect(200)
         .then((response) => {
             expect(response.body).toHaveLength(4);
@@ -37,7 +37,7 @@ describe('/api/categories', () => {
     });
     test('Check that all required columns are returned', () => {
         return request(app)
-        .get('/categories')
+        .get('/api/categories')
         .expect(200)
         .then((response) => {
             expect(response.body).toHaveLength(4);
