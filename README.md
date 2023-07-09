@@ -1,4 +1,4 @@
-# Northcoders House of Games API
+# House of Games API
 
 ## Setting up the Project Locally
 
