@@ -1,4 +1,4 @@
-# House of Games API
+# House of Games API Back-end
 
 ## Setting up the Project Locally
 
